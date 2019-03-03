@@ -27,6 +27,9 @@ if [ &quot;$STATUS&quot; = &quot;new file:&quot; ]; then
      git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home commit -m &quot;update: $DATE&quot;
 fi</command>
     </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home push</command>
+    </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers/>
