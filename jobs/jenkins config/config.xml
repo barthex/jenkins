@@ -1,0 +1,33 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Update jenkins config</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home add    /var/jenkins_home/config.xml
+git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home add -f /var/jenkins_home/jobs/*/config.xml</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>STATUS=$(echo $(git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status) | tr -d &apos;\r&apos; | sed &apos;s/^.*\(new file:\).*$/\1/g&apos;)
+DATE=$(date)
+echo &quot;-----$DATE-----$STATUS----&quot;
+if [ &quot;$STATUS&quot; = &quot;new file:&quot; ]; then
+     git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home commit -m &quot;update: $DATE&quot;
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
