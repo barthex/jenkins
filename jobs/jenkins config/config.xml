@@ -9,7 +9,11 @@
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H 6 * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
@@ -27,6 +31,9 @@ if [ &quot;$STATUS&quot; = &quot;commit&quot; ]; then
 else
      echo &quot;nothing to commit.&quot;
 fi</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home pull</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>STATUS=$(echo $(git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status) | tr -d &apos;\r&apos; | sed &apos;s/^.*\(use..git.push\).*$/push/g&apos;)

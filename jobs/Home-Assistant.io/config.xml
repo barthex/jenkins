@@ -42,6 +42,10 @@ git checkout next</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cd home-assistant.io
+git pull</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
 git merge upstream/next</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
@@ -55,6 +59,10 @@ git status</command>
     <hudson.tasks.Shell>
       <command>cd home-assistant.io
 git checkout current</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git pull</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cd home-assistant.io

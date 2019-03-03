@@ -43,6 +43,10 @@ git checkout master</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cd rak8s
+git pull</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
 git merge upstream/master</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>

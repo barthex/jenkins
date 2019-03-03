@@ -42,6 +42,10 @@ git checkout development</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cd Sonoff-Tasmota
+git pull</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd Sonoff-Tasmota
 git merge upstream/development</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
@@ -55,6 +59,10 @@ git status</command>
     <hudson.tasks.Shell>
       <command>cd Sonoff-Tasmota
 git checkout master</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd Sonoff-Tasmota
+git pull</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cd Sonoff-Tasmota
