@@ -1,0 +1,75 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Sync home assistant io fork form upstream</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H 3 * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>if [ ! -d &quot;home-assistant.io&quot; ]; then
+     git clone git@github.com:tedsluis/home-assistant.io.git
+else
+     echo &quot;repo already exists!&quot;
+fi</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+REMOTES=$(git remote -v | wc -l)
+if [ &quot;$REMOTES&quot; -lt 4 ]; then
+     git remote add upstream https://github.com/home-assistant/home-assistant.io.git
+else
+     echo &quot;upstream already added!&quot;
+fi</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git fetch upstream</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git checkout next</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git merge upstream/next</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git push</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git status</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git checkout current</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git merge upstream/current</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git push
+</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd home-assistant.io
+git status</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

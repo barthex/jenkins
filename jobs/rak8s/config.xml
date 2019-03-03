@@ -1,0 +1,59 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>sync fork from upstream&#xd;
+Raspberry Pi based Kubernetes cluster with Ansible</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.TimerTrigger>
+      <spec>H 4 * * *</spec>
+    </hudson.triggers.TimerTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>if [ ! -d &quot;rak8s&quot; ]; then
+     git clone git@github.com:tedsluis/rak8s.git
+else
+     echo &quot;repo already exists!&quot;
+fi</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
+REMOTES=$(git remote -v | wc -l)
+if [ &quot;$REMOTES&quot; -lt 4 ]; then
+     git remote add upstream https://github.com/rak8s/rak8s.git
+else
+     echo &quot;upstream already added!&quot;
+fi</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
+git fetch upstream</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
+git checkout master</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
+git merge upstream/master</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
+git push</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd rak8s
+git status</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
