@@ -20,15 +20,16 @@ git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home add -f /var/j
       <command>git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>STATUS=$(echo $(git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status) | tr -d &apos;\r&apos; | sed &apos;s/^.*\(new file:\).*$/\1/g&apos;)
+      <command>STATUS=$(echo $(git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status) | tr -d &apos;\r&apos; | sed &apos;s/^.*\(new file:\|modified:\).*$/commit/g&apos;)
 DATE=$(date)
-echo &quot;-----$DATE-----$STATUS----&quot;
-if [ &quot;$STATUS&quot; = &quot;new file:&quot; ]; then
+if [ &quot;$STATUS&quot; = &quot;commit&quot; ]; then
      git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home commit -m &quot;update: $DATE&quot;
+else
+     echo &quot;nothing to commit.&quot;
 fi</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home push</command>
+      <command>#git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home push</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
