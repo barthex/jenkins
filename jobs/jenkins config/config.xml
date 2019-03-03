@@ -29,7 +29,12 @@ else
 fi</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>#git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home push</command>
+      <command>STATUS=$(echo $(git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home status) | tr -d &apos;\r&apos; | sed &apos;s/^.*\(use..git.push\).*$/push/g&apos;)
+if [ &quot;$STATUS&quot; = &quot;push&quot; ]; then
+     git --git-dir=/var/jenkins_home/.git --work-tree=/var/jenkins_home push
+else
+     echo &quot;nothing to push.&quot;
+fi</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
