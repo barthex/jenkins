@@ -17,10 +17,23 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;cd /home/jenkins/jobs/Home-Assistant/workspace/home-assistant/; docker build -f /home/jenkins/jobs/Home-Assistant/workspace/home-assistant/Dockerfile -t tedsluis/home-assistant:latest .&apos;</command>
+      <command>cd /var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/
+git --git-dir=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/.git --work-tree=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/ checkout dev</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;cat /home/jenkins/jobs/build-home-assistant/workspace/docker.secret | xargs  docker login --username tedsluis --password&apos;
+      <command>cd /var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/
+COMMIT=$(git --git-dir=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/.git --work-tree=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/ log | head -n 1 | awk &apos;{print $2}&apos; | sed &apos;s/^\(.......\).*$/\1/g&apos;)
+TAG=$(git --git-dir=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/.git --work-tree=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/ tag -l | grep -P &apos;^[0123456789]\.[0123456789]{2}\.[0123456789]&apos; | sed &apos;s/^\(......\).*$/\1/g&apos; | tail -n 1)
+IMAGE=&quot;tedsluis/home-assistant:$TAG-$COMMIT&quot;
+ssh -o StrictHostKeyChecking=no root@192.168.11.100 &quot;cd /home/jenkins/jobs/Home-Assistant/workspace/home-assistant/; docker build -f /home/jenkins/jobs/Home-Assistant/workspace/home-assistant/Dockerfile -t $IMAGE -t tedsluis/home-assistant:latest .&quot;</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cd /var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/
+COMMIT=$(git --git-dir=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/.git --work-tree=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/ log | head -n 1 | awk &apos;{print $2}&apos; | sed &apos;s/^\(.......\).*$/\1/g&apos;)
+TAG=$(git --git-dir=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/.git --work-tree=/var/jenkins_home/jobs/Home-Assistant/workspace/home-assistant/ tag -l | grep -P &apos;^[0123456789]\.[0123456789]{2}\.[0123456789]&apos; | sed &apos;s/^\(......\).*$/\1/g&apos; | tail -n 1)
+IMAGE=&quot;tedsluis/home-assistant:$TAG-$COMMIT&quot;
+ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;cat /home/jenkins/jobs/build-home-assistant/workspace/docker.secret | xargs  docker login --username tedsluis --password&apos;
+ssh -o StrictHostKeyChecking=no root@192.168.11.100 &quot;docker push $IMAGE&quot;
 ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker push tedsluis/home-assistant:latest&apos;</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
