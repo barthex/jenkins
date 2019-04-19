@@ -11,8 +11,10 @@ ExecStartPre=-/usr/bin/docker rm -f jenkins-server
 ExecStartPre=/usr/bin/docker pull jenkins/jenkins:lts
 ExecStart=/usr/bin/docker run --name="jenkins-server" \
                               -v /home/jenkins:/var/jenkins_home \
-                              -p 8080:8080 \
+                              -p 8888:8080 \
                               -p 50000:50000 \
+                              --cpus="0.5" \
+                              --env JENKINS_OPTS="--prefix=/jenkins" \
                               jenkins/jenkins:lts
 ExecStop=-/usr/bin/docker stop -t 2 jenkins-server
 ExecStopPost=-/usr/bin/docker rm -f jenkins-server
