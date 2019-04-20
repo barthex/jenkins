@@ -44,7 +44,7 @@ ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker push tedsluis/h
 ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker container prune -f&apos;
 ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker volume prune -f&apos;
 ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker network prune -f&apos;
-ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker system prune --volumes -f&apos;</command>
+ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker system prune -f&apos;</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>ssh -o StrictHostKeyChecking=no root@192.168.11.100 &apos;docker images --format &quot;table {{.Repository}}\t{{.Tag}}\t{{.ID}}\t{{.CreatedAt}}\t{{.Size}}&quot;&apos;</command>
